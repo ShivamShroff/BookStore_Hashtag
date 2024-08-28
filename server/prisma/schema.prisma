@@ -1,0 +1,35 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+        
+
+model Book {
+  id           Int     @id @default(autoincrement())
+  title        String 
+  author       String
+  genre        Genre
+  price        Float
+  availability Boolean
+}
+
+enum Genre {
+  Sci_fi
+  Romantic
+  Devotional
+  Action
+  Fantasy
+  Historical_Fiction
+  Horror
+  Non_Fiction
+  Biography
+  Self_Help
+  Young_Adult
+}

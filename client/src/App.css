@@ -1,0 +1,5 @@
+.book-list-container {
+    max-height: 400px; /* Adjust this value as needed to fit two rows */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
