@@ -16,6 +16,10 @@
 ### run prisma migrations: npx prisma migrate dev
 ### start the server - npm run dev
 
+#### test for Server
+### Navigate to Server Directory cd server
+### start testing - npm test
+
 ## prisma
 ### navigate to server directory cd server
 ### npx prisma studio
@@ -26,3 +30,4 @@
 ### generate migration - new prisma migrate dev --migration name
 ### migrate to db - npx prisma migrate deploy
 ### generate prisma client - npx prisma generate
+Check out this video: [Project Overview](https://youtu.be/xTnH2mn1tb0?si=zteZ6FBeJMkZLg3j)
