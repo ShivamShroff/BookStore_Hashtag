@@ -2,13 +2,22 @@ const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();  
 
 //controller to fetch all books from db
-exports.getBooks = async (req,res) => {
-  try{
-    const books = await prisma.book.findMany();
-    res.status(200).json(books);
-  }
-  catch(err){
-    res.status(500).json({error:err.message});
+exports.getBooks = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const set = (page - 1) * pageSize;
+    const books = await prisma.book.findMany({
+      skip: set,
+      take: pageSize,
+    });
+    const totalCount = await prisma.book.count();
+    res.status(200).json({
+      book: books,
+      totalCount,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 // controller for  adding a new book in db

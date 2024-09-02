@@ -9,21 +9,36 @@ function InventoryManagement() {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [inventorySummary, setInventorySummary] = useState({});
   const [availabilityFilter, setAvailabilityFilter] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{  // fetch books  from api when component mounts
-    fetchBooks();
-  },[]);
+  useEffect(() => {
+    fetchBooks(currentPage);
+  }, [currentPage]);
 
-  const fetchBooks = async()=> {
-    try{
-       //fetching books through get request
-      const response = await axios.get('http://localhost:3001/api/books');
-      setBooks(response.data);
-      setFilteredBooks(response.data);
-      calculateInventorySummary(response.data);
-    }
-    catch(error){
+  const fetchBooks = async (page) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:3001/api/books?page=${page}&pageSize=10`);
+      const newBooks = response.data.book;
+      setBooks((prevBooks) => [...prevBooks, ...newBooks]);
+      setFilteredBooks((prevFilteredBooks) => [...prevFilteredBooks, ...newBooks]);
+      calculateInventorySummary(newBooks);
+      setTotalPages(Math.ceil(response.data.totalCount / 10));
+      setLoading(false);
+    } catch (error) {
       console.error('Error in fetching books', error);
+      setLoading(false);
+    }
+  };
+
+  const handleScroll = (event) => {
+    const tableContainer = event.target;
+    const scrollPosition = tableContainer.scrollTop + tableContainer.offsetHeight;
+    const scrollHeight = tableContainer.scrollHeight;
+    if (scrollPosition >= scrollHeight && currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
   //calculate summary of inventory
@@ -108,7 +123,8 @@ function InventoryManagement() {
         ))}
       </ul>
 
-      <TableContainer component={Paper} elevation={3} style={{ marginTop: '20px', marginBottom: '20px', maxHeight: '500px' }}>
+      <TableContainer component={Paper} elevation={3} style={{ marginTop: '20px', marginBottom: '20px', maxHeight: '500px' }} on
+      onScroll={handleScroll}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -132,6 +148,7 @@ function InventoryManagement() {
           </TableBody>
         </Table>
       </TableContainer>
+      {loading && <Typography variant="h6" gutterBottom>Loading...</Typography>}
     </Container>
   );
 }
