@@ -28,7 +28,7 @@ function AddUpdateBook() { //managing state using usetate
       // here creates a object of book to send and ensuring its datatypes
       const bookToSend = { ...book, price: parseFloat(book.price), availability: book.availability === 'In Stock'};
       //a post req is being send
-      await axios.post('http://localhost:3001/api/add-book', bookToSend);
+      await axios.post(`${import.meta.env.VITE_DB_URL}/add-book`, bookToSend);
       alert('added successfully!');
       setBook({
         id: '',
@@ -61,7 +61,7 @@ function AddUpdateBook() { //managing state using usetate
         availability: book.availability
       };
       //here sending req
-      const response = await axios.put(`http://localhost:3001/api/update-book/${book.id}`, bookToSend);
+      const response = await axios.put(`${import.meta.env.VITE_DB_URL}/update-book/${book.id}`, bookToSend);
       alert('Book updated successfully!!');
     } 
     catch(error){

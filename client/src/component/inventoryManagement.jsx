@@ -32,7 +32,7 @@ function InventoryManagement() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3001/api/books?page=${page}&pageSize=10`
+        `${import.meta.env.VITE_DB_URL}/books?page=${page}&pageSize=10`
       );
       const newBooks = response.data.book;
       setBooks((prevBooks) => [...prevBooks, ...newBooks]);

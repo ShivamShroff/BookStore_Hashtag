@@ -34,7 +34,7 @@ function BookList() {
     
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3001/api/books?page=${currentPage}&limit=${itemsPerPage}`);
+      const response = await axios.get(`${import.meta.env.VITE_DB_URL}/books?page=${currentPage}&limit=${itemsPerPage}`);
       const newBooks = response.data.book;
       setBooks(prevBooks => [...prevBooks, ...newBooks]);
       if (newBooks.length < itemsPerPage) {
@@ -65,7 +65,12 @@ function BookList() {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+    setBooks([]); // Reset books
+    setCurrentPage(1); // Reset to first page
+    setHasMoreBooks(true);
+    fetchBooks();
   };
+  
 
   const handleRefresh = () => {
     setBooks([]);
