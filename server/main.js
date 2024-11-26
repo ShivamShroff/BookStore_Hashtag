@@ -14,6 +14,13 @@ var corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json()); //used to parse in incoming json in req.body
 //mounting routes
+
+app.get("/", (req, res) => {
+    res.status(200).json({ 
+        message: "Server is running smoothly" 
+    });
+});
+
 app.use("/api", router);
 
 app.listen(PORT, () => {
