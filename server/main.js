@@ -7,7 +7,7 @@ require("dotenv").config();
 
 //allowing request only from this port
 var corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: true,
     optionsSuccessStatus:200,
 };
 //using middlewares 
